@@ -1,0 +1,530 @@
+###
+# Plataforma de Investimentos - Requests HTTP
+# Base URL: http://localhost:3000
+
+###
+# Health Check
+GET http://localhost:3000/health
+
+###
+# ========================================
+# CONTEXTO AUTH (Autenticação)
+# ========================================
+
+###
+# Registrar usuário
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "investidor@exemplo.com",
+  "password": "senha123",
+  "name": "João Silva",
+  "document": "12345678901"
+}
+
+###
+# Registrar segundo usuário (para testes)
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "maria@exemplo.com",
+  "password": "senha123",
+  "name": "Maria Santos",
+  "document": "98765432100"
+}
+
+###
+# Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "investidor@exemplo.com",
+  "password": "senha123"
+}
+
+###
+# Obter perfil do usuário logado (requer token)
+GET http://localhost:3000/api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmMxZDM2MS03N2ZhLTQ0NGUtYWM4Yy0wMTlmZjM4ODY2MDMiLCJlbWFpbCI6ImludmVzdGlkb3JAZXhlbXBsby5jb20iLCJyb2xlIjoiSU5WRVNUT1IiLCJpYXQiOjE3NTIyNzk2NjgsImV4cCI6MTc1MjM2NjA2OH0.NvsMvux_DmoN8-O3egHE7rv3i4DqubvLg7FBVk7ekMc
+
+###
+# Atualizar perfil do usuário
+PUT http://localhost:3000/api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmMxZDM2MS03N2ZhLTQ0NGUtYWM4Yy0wMTlmZjM4ODY2MDMiLCJlbWFpbCI6ImludmVzdGlkb3JAZXhlbXBsby5jb20iLCJyb2xlIjoiSU5WRVNUT1IiLCJpYXQiOjE3NTIyNzk2NjgsImV4cCI6MTc1MjM2NjA2OH0.NvsMvux_DmoN8-O3egHE7rv3i4DqubvLg7FBVk7ekMc
+Content-Type: application/json
+
+{
+  "name": "João Silva Santos",
+  "document": "12345678901"
+}
+
+###
+# Logout
+POST http://localhost:3000/api/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3NmMxZDM2MS03N2ZhLTQ0NGUtYWM4Yy0wMTlmZjM4ODY2MDMiLCJlbWFpbCI6ImludmVzdGlkb3JAZXhlbXBsby5jb20iLCJyb2xlIjoiSU5WRVNUT1IiLCJpYXQiOjE3NTIyNzk2NjgsImV4cCI6MTc1MjM2NjA2OH0.NvsMvux_DmoN8-O3egHE7rv3i4DqubvLg7FBVk7ekMc
+
+###
+# ========================================
+# CONTEXTO SUITABILITY (Perfil de Investidor)
+# ========================================
+
+###
+# Obter perfil de suitability
+GET http://localhost:3000/api/suitability/profile/uuid-do-usuario
+
+###
+# Exemplo com UUID fictício
+GET http://localhost:3000/api/suitability/profile/12345678-1234-1234-1234-123456789012
+
+###
+# Atualizar questionário de suitability
+PUT http://localhost:3000/api/suitability/profile/12345678-1234-1234-1234-123456789012/questionnaire
+Content-Type: application/json
+
+{
+  "age": 30,
+  "income": 8000,
+  "investmentExperience": "MEDIUM",
+  "investmentGoal": "LONG_TERM",
+  "timeHorizon": "LONG",
+  "riskTolerance": "MEDIUM"
+}
+
+###
+# Questionário perfil conservador
+PUT http://localhost:3000/api/suitability/profile/12345678-1234-1234-1234-123456789012/questionnaire
+Content-Type: application/json
+
+{
+  "age": 55,
+  "income": 4000,
+  "investmentExperience": "LOW",
+  "investmentGoal": "PRESERVATION",
+  "timeHorizon": "SHORT",
+  "riskTolerance": "LOW"
+}
+
+###
+# Questionário perfil agressivo
+PUT http://localhost:3000/api/suitability/profile/12345678-1234-1234-1234-123456789012/questionnaire
+Content-Type: application/json
+
+{
+  "age": 25,
+  "income": 15000,
+  "investmentExperience": "HIGH",
+  "investmentGoal": "GROWTH",
+  "timeHorizon": "LONG",
+  "riskTolerance": "HIGH"
+}
+
+###
+# Validar se pode investir em ações
+GET http://localhost:3000/api/suitability/profile/12345678-1234-1234-1234-123456789012/validate/STOCKS
+
+###
+# Validar se pode investir em renda fixa
+GET http://localhost:3000/api/suitability/profile/12345678-1234-1234-1234-123456789012/validate/FIXED_INCOME
+
+###
+# Validar se pode investir em derivativos
+GET http://localhost:3000/api/suitability/profile/12345678-1234-1234-1234-123456789012/validate/DERIVATIVES
+
+###
+# ========================================
+# CONTEXTO PRODUCT CATALOG (Catálogo de Produtos)
+# ========================================
+
+###
+# Listar todos os produtos
+GET http://localhost:3000/api/products
+
+###
+# Filtrar produtos por tipo
+GET http://localhost:3000/api/products?type=FIXED_INCOME
+
+###
+# Filtrar produtos por tipo e risco
+GET http://localhost:3000/api/products?type=STOCKS&riskRating=HIGH
+
+###
+# Filtrar produtos por categoria
+GET http://localhost:3000/api/products?category=GOVERNMENT_BONDS
+
+###
+# Obter produto específico por ID
+GET http://localhost:3000/api/products/uuid-do-produto
+
+###
+# Obter produtos por tipo (rota específica)
+GET http://localhost:3000/api/products/type/FIXED_INCOME
+
+###
+# Obter produtos do tipo ações
+GET http://localhost:3000/api/products/type/STOCKS
+
+###
+# Obter produtos do tipo fundos
+GET http://localhost:3000/api/products/type/FUNDS
+
+###
+# Obter categorias disponíveis
+GET http://localhost:3000/api/products/meta/categories
+
+###
+# Criar novo produto (agora dinâmico!)
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+  "name": "CDB Banco XYZ",
+  "type": "FIXED_INCOME",
+  "description": "Certificado de Deposito Bancario com rentabilidade de 110% do CDI",
+  "minimumInvestment": 5000,
+  "currentPrice": 1000.00,
+  "yield": 0.125,
+  "riskRating": "LOW",
+  "category": "BANK_DEPOSITS"
+}
+
+###
+# Criar produto de ações
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+  "name": "Acoes VALE3",
+  "type": "STOCKS",
+  "description": "Acoes ordinarias da Vale",
+  "minimumInvestment": 1,
+  "currentPrice": 68.90,
+  "riskRating": "HIGH",
+  "category": "EQUITIES"
+}
+
+###
+# Atualizar produto
+PUT http://localhost:3000/api/products/uuid-do-produto
+Content-Type: application/json
+
+{
+  "currentPrice": 35.20,
+  "yield": 0.09
+}
+
+###
+# Desativar produto
+DELETE http://localhost:3000/api/products/uuid-do-produto
+
+###
+# ========================================
+# CONTEXTO TRANSACTIONS (Transações)
+# ========================================
+
+###
+# Criar transação de compra
+POST http://localhost:3000/api/transactions
+Content-Type: application/json
+
+{
+  "userId": "12345678-1234-1234-1234-123456789012",
+  "assetId": "PETR4",
+  "type": "BUY",
+  "quantity": 100,
+  "price": 32.45
+}
+
+###
+# Criar transação de venda
+POST http://localhost:3000/api/transactions
+Content-Type: application/json
+
+{
+  "userId": "12345678-1234-1234-1234-123456789012",
+  "assetId": "PETR4",
+  "type": "SELL",
+  "quantity": 50,
+  "price": 35.20
+}
+
+###
+# Listar transações do usuário
+GET http://localhost:3000/api/transactions/user/12345678-1234-1234-1234-123456789012
+
+###
+# Executar transação
+PUT http://localhost:3000/api/transactions/uuid-da-transacao/execute
+
+###
+# Cancelar transação
+PUT http://localhost:3000/api/transactions/uuid-da-transacao/cancel
+
+###
+# ========================================
+# CONTEXTO PORTFOLIO (Gestão de Carteira)
+# ========================================
+
+###
+# Obter carteira do usuário
+GET http://localhost:3000/api/portfolio/user/12345678-1234-1234-1234-123456789012
+
+###
+# Criar nova carteira
+POST http://localhost:3000/api/portfolio
+Content-Type: application/json
+
+{
+  "userId": "12345678-1234-1234-1234-123456789012",
+  "name": "Carteira Personalizada"
+}
+
+###
+# Adicionar posição à carteira
+POST http://localhost:3000/api/portfolio/user/12345678-1234-1234-1234-123456789012/positions
+Content-Type: application/json
+
+{
+  "assetId": "PETR4",
+  "assetType": "STOCKS",
+  "quantity": 100,
+  "price": 32.45
+}
+
+###
+# Adicionar posição de renda fixa
+POST http://localhost:3000/api/portfolio/user/12345678-1234-1234-1234-123456789012/positions
+Content-Type: application/json
+
+{
+  "assetId": "TESOURO_SELIC",
+  "assetType": "FIXED_INCOME",
+  "quantity": 10,
+  "price": 98.50
+}
+
+###
+# Adicionar posição de fundo
+POST http://localhost:3000/api/portfolio/user/12345678-1234-1234-1234-123456789012/positions
+Content-Type: application/json
+
+{
+  "assetId": "FUNDO_XYZ",
+  "assetType": "FUNDS",
+  "quantity": 1000,
+  "price": 1.45
+}
+
+###
+# Remover posição da carteira
+DELETE http://localhost:3000/api/portfolio/user/12345678-1234-1234-1234-123456789012/positions/PETR4
+Content-Type: application/json
+
+{
+  "quantity": 30
+}
+
+###
+# Obter performance da carteira
+GET http://localhost:3000/api/portfolio/user/12345678-1234-1234-1234-123456789012/performance
+
+###
+# Atualizar preços da carteira
+PUT http://localhost:3000/api/portfolio/user/12345678-1234-1234-1234-123456789012/prices
+Content-Type: application/json
+
+{
+  "priceUpdates": [
+    {
+      "assetId": "PETR4",
+      "price": 35.00
+    },
+    {
+      "assetId": "TESOURO_SELIC",
+      "price": 99.20
+    },
+    {
+      "assetId": "FUNDO_XYZ",
+      "price": 1.48
+    }
+  ]
+}
+
+###
+# ========================================
+# CONTEXTO BACKOFFICE (Compliance)
+# ========================================
+
+###
+# Gerar relatório de compliance
+POST http://localhost:3000/api/backoffice/reports/compliance
+Content-Type: application/json
+
+{
+  "startDate": "2024-01-01",
+  "endDate": "2024-01-31",
+  "type": "MONTHLY_COMPLIANCE"
+}
+
+###
+# Gerar relatório trimestral
+POST http://localhost:3000/api/backoffice/reports/compliance
+Content-Type: application/json
+
+{
+  "startDate": "2024-01-01",
+  "endDate": "2024-03-31",
+  "type": "QUARTERLY_COMPLIANCE"
+}
+
+###
+# Listar relatórios
+GET http://localhost:3000/api/backoffice/reports
+
+###
+# Obter relatório específico
+GET http://localhost:3000/api/backoffice/reports/uuid-do-relatorio
+
+###
+# Registrar evento de auditoria
+POST http://localhost:3000/api/backoffice/audit
+Content-Type: application/json
+
+{
+  "userId": "12345678-1234-1234-1234-123456789012",
+  "action": "TRANSACTION_EXECUTED",
+  "resource": "TRANSACTION",
+  "details": "Transação de compra executada com sucesso"
+}
+
+###
+# Registrar login de usuário
+POST http://localhost:3000/api/backoffice/audit
+Content-Type: application/json
+
+{
+  "userId": "12345678-1234-1234-1234-123456789012",
+  "action": "USER_LOGIN",
+  "resource": "AUTH",
+  "details": "Usuário fez login no sistema"
+}
+
+###
+# Registrar atualização de perfil
+POST http://localhost:3000/api/backoffice/audit
+Content-Type: application/json
+
+{
+  "userId": "12345678-1234-1234-1234-123456789012",
+  "action": "PROFILE_UPDATED",
+  "resource": "SUITABILITY",
+  "details": "Perfil de suitability atualizado"
+}
+
+###
+# Listar logs de auditoria
+GET http://localhost:3000/api/backoffice/audit
+
+###
+# Filtrar logs por usuário
+GET http://localhost:3000/api/backoffice/audit?userId=12345678-1234-1234-1234-123456789012
+
+###
+# Filtrar logs por ação
+GET http://localhost:3000/api/backoffice/audit?action=TRANSACTION_EXECUTED
+
+###
+# Filtrar logs com limite
+GET http://localhost:3000/api/backoffice/audit?limit=10
+
+###
+# Filtrar logs por usuário e ação
+GET http://localhost:3000/api/backoffice/audit?userId=12345678-1234-1234-1234-123456789012&action=USER_LOGIN&limit=5
+
+###
+# ========================================
+# FLUXO COMPLETO DE TESTE
+# ========================================
+
+###
+# 1. Registrar usuário de teste
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "teste@investimentos.com",
+  "password": "senha123",
+  "name": "Usuário Teste",
+  "document": "11111111111"
+}
+
+###
+# 2. Fazer login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teste@investimentos.com",
+  "password": "senha123"
+}
+
+###
+# 3. Atualizar perfil de suitability (use o userId retornado no login)
+PUT http://localhost:3000/api/suitability/profile/USER_ID_AQUI/questionnaire
+Content-Type: application/json
+
+{
+  "age": 35,
+  "income": 10000,
+  "investmentExperience": "MEDIUM",
+  "investmentGoal": "GROWTH",
+  "timeHorizon": "LONG",
+  "riskTolerance": "MEDIUM"
+}
+
+###
+# 4. Listar produtos disponíveis
+GET http://localhost:3000/api/products
+
+###
+# 5. Validar se pode investir em ações
+GET http://localhost:3000/api/suitability/profile/USER_ID_AQUI/validate/STOCKS
+
+###
+# 6. Criar transação de compra
+POST http://localhost:3000/api/transactions
+Content-Type: application/json
+
+{
+  "userId": "USER_ID_AQUI",
+  "assetId": "PETR4",
+  "type": "BUY",
+  "quantity": 100,
+  "price": 32.45
+}
+
+###
+# 7. Executar transação (use o ID da transação criada)
+PUT http://localhost:3000/api/transactions/TRANSACTION_ID_AQUI/execute
+
+###
+# 8. Verificar carteira
+GET http://localhost:3000/api/portfolio/user/USER_ID_AQUI
+
+###
+# 9. Obter performance
+GET http://localhost:3000/api/portfolio/user/USER_ID_AQUI/performance
+
+###
+# 10. Registrar auditoria
+POST http://localhost:3000/api/backoffice/audit
+Content-Type: application/json
+
+{
+  "userId": "USER_ID_AQUI",
+  "action": "PORTFOLIO_VIEWED",
+  "resource": "PORTFOLIO",
+  "details": "Usuário visualizou performance da carteira"
+}
